@@ -1366,6 +1366,14 @@
 % \end{macro}
 % \end{macro}
 %
+% microtype との同時利用時の問題回避
+%
+\def\bxjs@@ifnarrowbaselines{%
+  \ifnarrowbaselines\expandafter\@firstoftwo
+  \else \expandafter\@secondoftwo
+  \fi
+}
+%
 % \begin{macro}{\normalsize}
 %
 % 標準のフォントサイズと行送りを選ぶコマンドです。
@@ -1385,11 +1393,9 @@
 %
 %    \begin{macrocode}
 \renewcommand{\normalsize}{%
-  \ifnarrowbaselines
-    \bxjs@setfontsize\normalsize\@xpt\@xiipt
-  \else
-    \bxjs@setfontsize\normalsize\@xpt{\n@baseline}%
-  \fi
+  \bxjs@@ifnarrowbaselines
+    {\bxjs@setfontsize\normalsize\@xpt\@xiipt}%
+    {\bxjs@setfontsize\normalsize\@xpt{\n@baseline}}
 %    \end{macrocode}
 %
 % 数式の上のアキ（|\abovedisplayskip|），
@@ -1474,13 +1480,8 @@
 %
 %    \begin{macrocode}
 \newcommand{\small}{%
-  \ifnarrowbaselines
-%<!kiyou>    \bxjs@setfontsize\small\@ixpt{11}%
-%<kiyou>    \bxjs@setfontsize\small{8.8888}{11}%
-  \else
-%<!kiyou>    \bxjs@setfontsize\small\@ixpt{13}%
-%<kiyou>    \bxjs@setfontsize\small{8.8888}{13.2418}%
-  \fi
+%<!kiyou> \bxjs@@ifnarrowbaselines{\bxjs@setfontsize\small\@ixpt{11}}{\bxjs@setfontsize\small\@ixpt{13}}%
+%<kiyou>  \bxjs@@ifnarrowbaselines{\bxjs@setfontsize\small{8.8888}{11}}{\bxjs@setfontsize\small{8.8888}{13.2418}}%
   \abovedisplayskip 9\p@? \@plus3\p@? \@minus4\p@?
   \abovedisplayshortskip  \z@ \@plus3\p@?
   \belowdisplayskip \abovedisplayskip
@@ -1500,13 +1501,8 @@
 %
 %    \begin{macrocode}
 \newcommand{\footnotesize}{%
-  \ifnarrowbaselines
-%<!kiyou>    \bxjs@setfontsize\footnotesize\@viiipt{9.5}%
-%<kiyou>    \bxjs@setfontsize\footnotesize{8.8888}{11}%
-  \else
-%<!kiyou>    \bxjs@setfontsize\footnotesize\@viiipt{11}%
-%<kiyou>    \bxjs@setfontsize\footnotesize{8.8888}{13.2418}%
-  \fi
+%<!kiyou> \bxjs@@ifnarrowbaselines{\bxjs@setfontsize\footnotesize\@viiipt{9.5}}{\bxjs@setfontsize\footnotesize\@viiipt{11}}%
+%<kiyou>  \bsjs@@ifnarrowbaselines{\bxjs@setfontsize\footnotesize{8.8888}{11}}{\bxjs@setfontsize\footnotesize{8.8888}{13.2418}}%
   \abovedisplayskip 6\p@? \@plus2\p@? \@minus3\p@?
   \abovedisplayshortskip  \z@ \@plus2\p@?
   \belowdisplayskip \abovedisplayskip
